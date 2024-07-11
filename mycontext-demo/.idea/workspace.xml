@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2961cd02-4506-46cc-92e2-aaf7a84160b6" name="变更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,18 +38,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/CODE-gather/code-java/myfirst/context-hierarchy-demo&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/CODE-gather/code-java/myfirst/context-hierarchy-demo",
+    "settings.editor.selected.configurable": "configurable.group.build",
+    "spring.configuration.checksum": "78eb43290b87b3148dafb2a0c70975f6"
   }
-}</component>
+}]]></component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
   <component name="RunManager" selected="Spring Boot.ContextHierarchyDemoApplication">
     <configuration name="ContextHierarchyDemoApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="context-hierarchy-demo" />
+      <module name="mycontext-demo" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="geektime.spring.web.context.ContextHierarchyDemoApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -73,6 +81,8 @@
       <updated>1720686427292</updated>
       <workItem from="1720686429532" duration="41000" />
       <workItem from="1720686519274" duration="50000" />
+      <workItem from="1720686586467" duration="85000" />
+      <workItem from="1720686728171" duration="27000" />
     </task>
     <servers />
   </component>
