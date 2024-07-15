@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2961cd02-4506-46cc-92e2-aaf7a84160b6" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="2961cd02-4506-46cc-92e2-aaf7a84160b6" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,9 +40,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/CODE-gather/code-java/myfirst/context-hierarchy-demo",
+    "last_opened_file_path": "E:/CODE-gather/code-java/yangboxin/mycontext-demo",
     "settings.editor.selected.configurable": "configurable.group.build",
-    "spring.configuration.checksum": "78eb43290b87b3148dafb2a0c70975f6"
+    "spring.configuration.checksum": "ceaf29fdf81275138ab25a548afccbc1"
   }
 }]]></component>
   <component name="RunDashboard">
@@ -83,6 +80,7 @@
       <workItem from="1720686519274" duration="50000" />
       <workItem from="1720686586467" duration="85000" />
       <workItem from="1720686728171" duration="27000" />
+      <workItem from="1720687653552" duration="51000" />
     </task>
     <servers />
   </component>
