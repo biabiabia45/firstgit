@@ -1,6 +1,7 @@
 package myproject.wallet.domain.transaction.kafka;
 
 import lombok.extern.slf4j.Slf4j;
+import myproject.wallet.domain.transaction.event.TransactionTreansferedEvent;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -29,16 +30,12 @@ public class TransactionEventProducer {
         this.transactionTransferTopic = transactionTransferTopic;
     }
 
-    public void sendTransactionEvent(String transactionId, String sourceWalletId, String targetWalletId, String amount) {
-        String message = String.format("Transaction ID: %s, Source Wallet ID: %s, Target Wallet ID: %s, Amount: %s",
-                transactionId, sourceWalletId, targetWalletId, amount);
-        ProducerRecord<String, String> record = new ProducerRecord<>(transactionTransferTopic, message);
-        kafkaProducer.send(record, (metadata, exception) -> {
-            if (exception != null) {
-                log.error("Failed to send message to topic {} with exception: {}", transactionTransferTopic, exception.getMessage());
-            } else {
-                log.info("Sent message to topic {} with offset {} and partition {}", metadata.topic(), metadata.offset(), metadata.partition());
-            }
-        });
+    public void sendTransactionTransferedEvent(TransactionTreansferedEvent event) {
+        String key = event.getTransactionId().toString();
+        String value = String.format("Source Wallet: %s, Target Wallet: %s, Amount: %s",
+                event.getSourceWalletId(), event.getTargetWalletId(), event.getAmount());
+
+        ProducerRecord<String, String> record = new ProducerRecord<>(transactionTransferTopic, key, value);
+        kafkaProducer.send(record);
     }
 }
