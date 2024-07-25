@@ -85,4 +85,8 @@ public class UserService {
         }
     }
 
+    public Optional<User> findUserById(String userId) {
+        UUID id = UUID.fromString(userId);
+        return getUserById(id);
+    }
 }

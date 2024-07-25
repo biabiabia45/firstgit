@@ -1,64 +1,42 @@
 package myproject.wallet.domain.wallet.kafka;
 
-import myproject.wallet.domain.wallet.WalletService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class WalletEventConsumer {
 
-    private final WalletService walletService;
+    private static final Logger logger = LoggerFactory.getLogger(WalletEventConsumer.class);
 
-    public WalletEventConsumer(WalletService walletService) {
-        this.walletService = walletService;
+    @KafkaListener(topics = "${kafka.wallet-created-topic}", groupId = "${kafka.wallet-group-id}")
+    public void consumeWalletCreatedEvent(String message) {
+        logger.info("Received WalletCreatedEvent: {}", message);
+        // 处理 WalletCreatedEvent
     }
 
-    @KafkaListener(topics = "mywallet-topic", groupId = "wallet-group")
-    public void handleMessage(String message) {
-        // Parse the message to handle different types of events
-        // This can be done using a message format or event type identifier
-
-        // Assuming a basic message handling for demonstration
-        if (message.contains("WALLET_CREATED")) {
-            // Handle WalletCreatedEvent
-            handleWalletCreatedEvent(message);
-        } else if (message.contains("WALLET_UPDATED")) {
-            // Handle WalletUpdatedEvent
-            handleWalletUpdatedEvent(message);
-        } else if (message.contains("WALLET_DELETED")) {
-            // Handle WalletDeletedEvent
-            handleWalletDeletedEvent(message);
-        } else if (message.contains("WALLET_DEPOSITED")) {
-            // Handle WalletDepositedEvent
-            handleWalletDepositedEvent(message);
-        } else if (message.contains("WALLET_WITHDRAWN")) {
-            // Handle WalletWithdrawnEvent
-            handleWalletWithdrawnEvent(message);
-        }
+    @KafkaListener(topics = "${kafka.wallet-updated-topic}", groupId = "${kafka.wallet-group-id}")
+    public void consumeWalletUpdatedEvent(String message) {
+        logger.info("Received WalletUpdatedEvent: {}", message);
+        // 处理 WalletUpdatedEvent
     }
 
-    private void handleWalletCreatedEvent(String message) {
-        // Implement your logic to handle WalletCreatedEvent
-        System.out.println("Handling WalletCreatedEvent: " + message);
+    @KafkaListener(topics = "${kafka.wallet-deleted-topic}", groupId = "${kafka.wallet-group-id}")
+    public void consumeWalletDeletedEvent(String message) {
+        logger.info("Received WalletDeletedEvent: {}", message);
+        // 处理 WalletDeletedEvent
     }
 
-    private void handleWalletUpdatedEvent(String message) {
-        // Implement your logic to handle WalletUpdatedEvent
-        System.out.println("Handling WalletUpdatedEvent: " + message);
+    @KafkaListener(topics = "${kafka.wallet-deposited-topic}", groupId = "${kafka.wallet-group-id}")
+    public void consumeWalletDepositedEvent(String message) {
+        logger.info("Received WalletDepositedEvent: {}", message);
+        // 处理 WalletDepositedEvent
     }
 
-    private void handleWalletDeletedEvent(String message) {
-        // Implement your logic to handle WalletDeletedEvent
-        System.out.println("Handling WalletDeletedEvent: " + message);
-    }
-
-    private void handleWalletDepositedEvent(String message) {
-        // Implement your logic to handle WalletDepositedEvent
-        System.out.println("Handling WalletDepositedEvent: " + message);
-    }
-
-    private void handleWalletWithdrawnEvent(String message) {
-        // Implement your logic to handle WalletWithdrawnEvent
-        System.out.println("Handling WalletWithdrawnEvent: " + message);
+    @KafkaListener(topics = "${kafka.wallet-withdrawn-topic}", groupId = "${kafka.wallet-group-id}")
+    public void consumeWalletWithdrawnEvent(String message) {
+        logger.info("Received WalletWithdrawnEvent: {}", message);
+        // 处理 WalletWithdrawnEvent
     }
 }

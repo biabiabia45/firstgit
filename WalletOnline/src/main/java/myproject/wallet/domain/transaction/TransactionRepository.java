@@ -7,9 +7,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, UUID> {
-    List<Transaction> findByWalletId(UUID walletId);
+    List<Transaction> findBySourceWalletId(UUID sourceWalletId);
 
-    Optional<Transaction> findByIdAndWalletId(UUID transactionId, UUID walletId);
+    List<Transaction> findByTargetWalletId(UUID targetWalletId);
 
-    boolean existsByIdAndWalletId(UUID transactionId, UUID walletId);
+    Optional<Transaction> findByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId);
+
+    Optional<Transaction> findByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId);
+
+    boolean existsByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId);
+
+    boolean existsByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId);
 }

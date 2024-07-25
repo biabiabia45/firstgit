@@ -31,12 +31,20 @@ public class TransactionService {
         this.transactionEventProducer = transactionEventProducer;
     }
 
-    public List<Transaction> getAllTransactions(UUID walletId) {
-        return transactionRepository.findByWalletId(walletId);
+    public List<Transaction> getAllTransactionsBySourceWalletId(UUID sourceWalletId) {
+        return transactionRepository.findBySourceWalletId(sourceWalletId);
     }
 
-    public Optional<Transaction> getTransactionById(UUID walletId, UUID transactionId) {
-        return transactionRepository.findByIdAndWalletId(transactionId, walletId);
+    public List<Transaction> getAllTransactionsByTargetWalletId(UUID targetWalletId) {
+        return transactionRepository.findByTargetWalletId(targetWalletId);
+    }
+
+    public Optional<Transaction> getTransactionByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId) {
+        return transactionRepository.findByIdAndSourceWalletId(transactionId, sourceWalletId);
+    }
+
+    public Optional<Transaction> getTransactionByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId) {
+        return transactionRepository.findByIdAndTargetWalletId(transactionId, targetWalletId);
     }
 
     public void transfer(UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
@@ -58,7 +66,15 @@ public class TransactionService {
         walletRepository.save(sourceWallet);
         walletRepository.save(targetWallet);
 
-        // Optionally, create and save a transaction record
+        // Create and save a transaction record
+        Transaction transaction = new Transaction();
+        transaction.setSourceWalletId(sourceWalletId);
+        transaction.setTargetWalletId(targetWalletId);
+        transaction.setAmount(amount);
+        transactionRepository.save(transaction);
+
+        // Send an event with the transaction details
+        transactionEventProducer.sendTransactionEvent(transaction.getId().toString(), sourceWalletId.toString(), targetWalletId.toString(), amount.toString());
     }
 
 }

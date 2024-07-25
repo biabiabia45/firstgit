@@ -23,15 +23,25 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions(@PathVariable UUID walletId) {
-        List<Transaction> transactions = transactionService.getAllTransactions(walletId);
+    @GetMapping("/source")
+    public ResponseEntity<List<Transaction>> getAllTransactionsBySourceWalletId(@PathVariable UUID walletId) {
+        List<Transaction> transactions = transactionService.getAllTransactionsBySourceWalletId(walletId);
+        return ResponseEntity.ok(transactions);
+    }
+
+    @GetMapping("/target")
+    public ResponseEntity<List<Transaction>> getAllTransactionsByTargetWalletId(@PathVariable UUID walletId) {
+        List<Transaction> transactions = transactionService.getAllTransactionsByTargetWalletId(walletId);
         return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/{transactionId}")
-    public ResponseEntity<Transaction> getTransactionById(@PathVariable UUID walletId, @PathVariable UUID transactionId) {
-        Optional<Transaction> transaction = transactionService.getTransactionById(walletId, transactionId);
+    public ResponseEntity<Transaction> getTransactionById(
+            @PathVariable UUID walletId, @PathVariable UUID transactionId) {
+        Optional<Transaction> transaction = transactionService.getTransactionByIdAndSourceWalletId(transactionId, walletId);
+        if (transaction.isEmpty()) {
+            transaction = transactionService.getTransactionByIdAndTargetWalletId(transactionId, walletId);
+        }
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

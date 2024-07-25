@@ -16,6 +16,16 @@ public class Transaction {
     private UUID targetWalletId; // 目标钱包ID
     private BigDecimal amount; // 交易金额
 
+    public Transaction(UUID id, UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+        this.id = id;
+        this.sourceWalletId = sourceWalletId;
+        this.targetWalletId = targetWalletId;
+        this.amount = amount;
+    }
+
+    public Transaction() {
+
+    }
     // Getters and Setters
 
     public UUID getId() {
