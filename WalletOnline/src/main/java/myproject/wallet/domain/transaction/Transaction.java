@@ -5,32 +5,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.math.BigDecimal;
 import java.util.UUID;
-
 @Entity
 public class Transaction {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID walletId;
-    private double amount;
-    private String type; // e.g., "credit", "debit"
-    private String description;
+    private UUID sourceWalletId; // 来源钱包ID
+    private UUID targetWalletId; // 目标钱包ID
+    private BigDecimal amount; // 交易金额
 
-    // Constructors
-    public Transaction() {
-    }
+    // Getters and Setters
 
-    public Transaction(UUID id, UUID walletId, double amount, String type, String description) {
-        this.id = id;
-        this.walletId = walletId;
-        this.amount = amount;
-        this.type = type;
-        this.description = description;
-    }
-
-    // Getters and setters
     public UUID getId() {
         return id;
     }
@@ -39,35 +26,27 @@ public class Transaction {
         this.id = id;
     }
 
-    public UUID getWalletId() {
-        return walletId;
+    public UUID getSourceWalletId() {
+        return sourceWalletId;
     }
 
-    public void setWalletId(UUID walletId) {
-        this.walletId = walletId;
+    public void setSourceWalletId(UUID sourceWalletId) {
+        this.sourceWalletId = sourceWalletId;
     }
 
-    public double getAmount() {
+    public UUID getTargetWalletId() {
+        return targetWalletId;
+    }
+
+    public void setTargetWalletId(UUID targetWalletId) {
+        this.targetWalletId = targetWalletId;
+    }
+
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

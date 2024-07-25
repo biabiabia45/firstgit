@@ -13,14 +13,8 @@ public class WalletDeletedEvent {
         return walletId;
     }
 
-    public void setWalletId(UUID walletId) {
-        this.walletId = walletId;
-    }
-
     @Override
     public String toString() {
-        return "WalletDeletedEvent{" +
-                "walletId=" + walletId +
-                '}';
+        return "WalletDeletedEvent{walletId=" + walletId + "}";
     }
 }

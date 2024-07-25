@@ -1,8 +1,10 @@
 package myproject.wallet.domain.wallet;
 
-import myproject.wallet.domain.wallet.events.WalletCreatedEvent;
-import myproject.wallet.domain.wallet.events.WalletUpdatedEvent;
-import myproject.wallet.domain.wallet.events.WalletDeletedEvent;
+import lombok.extern.slf4j.Slf4j;
+import myproject.wallet.domain.wallet.events.*;
+import myproject.wallet.domain.wallet.expection.InsufficientFundsException;
+import myproject.wallet.domain.wallet.expection.InvalidAmountException;
+import myproject.wallet.domain.wallet.expection.WalletNotFoundException;
 import myproject.wallet.domain.wallet.kafka.WalletEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class WalletService {
 
     private final WalletRepository walletRepository;
@@ -39,57 +42,100 @@ public class WalletService {
         return walletRepository.findAll();
     }
 
-    public void createWallet(Wallet wallet) {
-        walletRepository.save(wallet);
-        WalletCreatedEvent event = new WalletCreatedEvent(wallet.getId());
-        eventPublisher.publishEvent(event);
-        walletEventProducer.sendWalletCreatedEvent(event.toString());
+
+    public Wallet createWallet(Wallet wallet) {
+        if (wallet == null) {
+            throw new IllegalArgumentException("Wallet cannot be null.");
+        }
+        Wallet savedWallet = walletRepository.save(wallet);
+
+        try {
+            WalletCreatedEvent event = new WalletCreatedEvent(savedWallet.getId());
+            eventPublisher.publishEvent(event);
+            walletEventProducer.sendWalletCreatedEvent(event.toString());
+        } catch (Exception e) {
+            log.error("Failed to publish event or send message", e);
+        }
+
+        return savedWallet;
     }
 
-    public void updateWallet(Wallet wallet) {
+    public Wallet updateWallet(Wallet wallet) {
         if (walletRepository.existsById(wallet.getId())) {
-            walletRepository.save(wallet);
-            WalletUpdatedEvent event = new WalletUpdatedEvent(wallet.getId());
-            eventPublisher.publishEvent(event);
-            walletEventProducer.sendWalletUpdatedEvent(event.toString());
+            Wallet updatedWallet = walletRepository.save(wallet);
+            try {
+                WalletUpdatedEvent event = new WalletUpdatedEvent(wallet.getId());
+                eventPublisher.publishEvent(event);
+                walletEventProducer.sendWalletUpdatedEvent(event.toString());
+            } catch (Exception e) {
+                log.error("Failed to publish event or send message", e);
+            }
+            return updatedWallet;
+        } else {
+            throw new WalletNotFoundException("Wallet with id " + wallet.getId() + " not found.");
         }
     }
 
     public void deleteWallet(UUID id) {
         if (walletRepository.existsById(id)) {
             walletRepository.deleteById(id);
-            WalletDeletedEvent event = new WalletDeletedEvent(id);
-            eventPublisher.publishEvent(event);
-            walletEventProducer.sendWalletDeletedEvent(event.toString());
+            try {
+                WalletDeletedEvent event = new WalletDeletedEvent(id);
+                eventPublisher.publishEvent(event);
+                walletEventProducer.sendWalletDeletedEvent(event.toString());
+            } catch (Exception e) {
+                log.error("Failed to publish event or send message", e);
+            }
+        } else {
+            throw new WalletNotFoundException("Wallet with id " + id + " not found.");
         }
     }
 
     // Additional methods to manage balance
     public void deposit(UUID walletId, BigDecimal amount) {
-        Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet not found"));
+        Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
 
         // Ensure the amount is positive
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Deposit amount must be positive");
+            throw new InvalidAmountException("Deposit amount must be positive");
         }
 
         // Update wallet balance
         wallet.setBalance(wallet.getBalance().add(amount));
         walletRepository.save(wallet);
+
+        // Publish an event
+        WalletDepositedEvent event = new WalletDepositedEvent(walletId, amount);
+        try {
+            eventPublisher.publishEvent(event);
+            walletEventProducer.sendWalletDepositedEvent(event.toString());
+        } catch (Exception e) {
+            log.error("Failed to publish event or send message", e);
+        }
     }
 
     public void withdraw(UUID walletId, BigDecimal amount) {
-        Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new RuntimeException("Wallet not found"));
+        Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
+
         // Ensure the amount is positive and the wallet has sufficient funds
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Withdrawal amount must be positive");
+            throw new InvalidAmountException("Withdrawal amount must be positive");
         }
         if (wallet.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient funds");
+            throw new InsufficientFundsException("Insufficient funds");
         }
 
         // Update wallet balance
         wallet.setBalance(wallet.getBalance().subtract(amount));
         walletRepository.save(wallet);
+
+        // Publish an event
+        WalletWithdrawnEvent event = new WalletWithdrawnEvent(walletId, amount);
+        try {
+            eventPublisher.publishEvent(event);
+            walletEventProducer.sendWalletWithdrawnEvent(event.toString());
+        } catch (Exception e) {
+            log.error("Failed to publish event or send message", e);
+        }
     }
 }
