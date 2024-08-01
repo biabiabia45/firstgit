@@ -1,7 +1,7 @@
 package myproject.wallet.domain.transaction.kafka;
 
 import lombok.extern.slf4j.Slf4j;
-import myproject.wallet.domain.transaction.Transaction;
+import myproject.wallet.domain.transaction.entity.Transaction;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
