@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(myproject.wallet.domain.transaction.exception.InsufficientFundsException.class)
+    @ExceptionHandler(myproject.wallet.domain.exceptions.InsufficientFundsException.class)
     public ResponseEntity<String> handleInsufficientFundsException(InsufficientFundsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(myproject.wallet.domain.transaction.exception.WalletNotFoundException.class)
+    @ExceptionHandler(myproject.wallet.domain.exceptions.WalletNotFoundException.class)
     public ResponseEntity<String> handleWalletNotFoundException(WalletNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }

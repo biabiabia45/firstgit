@@ -4,8 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import myproject.wallet.domain.entities.valueobject.Account;
-import myproject.wallet.domain.entities.valueobject.UserProfile;
+import myproject.wallet.domain.entities.valueobject.*;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,8 +14,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UserProfile profile;
-    private Account account;
+    private Username username;
+    private Email email;
+    private PhoneNumber phoneNumber;
+    private UserStatus userStatus;
 
     public UUID getId() {
         return id;
@@ -28,14 +29,6 @@ public class User {
 
     public UUID getUserId() {
         return id;
-    }
-
-    public UserProfile getProfile() {
-        return profile;
-    }
-
-    public Account getAccount() {
-        return account;
     }
 
     // 注册用户

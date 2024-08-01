@@ -1,4 +1,4 @@
-package myproject.wallet.domain.events;
+    package myproject.wallet.domain.events;
 
 import java.util.UUID;
 
