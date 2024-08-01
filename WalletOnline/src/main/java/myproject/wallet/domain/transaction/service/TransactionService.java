@@ -3,9 +3,10 @@ package myproject.wallet.domain.transaction.service;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.exceptions.WalletNotFoundException;
 import myproject.wallet.domain.repository.TransactionRepository;
-import myproject.wallet.domain.repository.UserRepository;
 import myproject.wallet.domain.repository.WalletRepository;
 import myproject.wallet.domain.transaction.entity.Transaction;
+import myproject.wallet.domain.transaction.valueobject.Money;
+import myproject.wallet.domain.transaction.valueobject.WalletId;
 import myproject.wallet.domain.transaction.event.TransactionTreansferedEvent;
 import myproject.wallet.domain.transaction.kafka.TransactionEventProducer;
 import myproject.wallet.domain.wallet.entity.Wallet;
@@ -23,15 +24,13 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final WalletRepository walletRepository;
-    private final UserRepository userRepository;
     private final TransactionEventProducer transactionEventProducer;
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, WalletRepository walletRepository,
-                              UserRepository userRepository, TransactionEventProducer transactionEventProducer) {
+                              TransactionEventProducer transactionEventProducer) {
         this.transactionRepository = transactionRepository;
         this.walletRepository = walletRepository;
-        this.userRepository = userRepository;
         this.transactionEventProducer = transactionEventProducer;
     }
 
@@ -52,7 +51,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public void transfer(UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+    public void transfer(WalletId sourceWalletId, WalletId targetWalletId, Money amount) {
         validateTransferAmount(amount);
 
         Wallet sourceWallet = findWalletById(sourceWalletId);
@@ -69,24 +68,24 @@ public class TransactionService {
         publishTransactionCreatedEvent(transaction);
     }
 
-    private void validateTransferAmount(BigDecimal amount) {
+    private void validateTransferAmount(Money amount) {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Transfer amount must be positive");
         }
     }
 
-    private Wallet findWalletById(UUID walletId) {
+    private Wallet findWalletById(WalletId walletId) {
         return walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletNotFoundException("Wallet not found with ID: " + walletId));
     }
 
-    private void validateSufficientFunds(Wallet sourceWallet, BigDecimal amount) {
+    private void validateSufficientFunds(Wallet sourceWallet, Money amount) {
         if (sourceWallet.getBalance().compareTo(amount) < 0) {
             throw new InsufficientFundsException("Insufficient funds in source wallet");
         }
     }
 
-    private void executeTransfer(Wallet sourceWallet, Wallet targetWallet, BigDecimal amount) {
+    private void executeTransfer(Wallet sourceWallet, Wallet targetWallet, Money amount) {
         sourceWallet.setBalance(sourceWallet.getBalance().subtract(amount));
         targetWallet.setBalance(targetWallet.getBalance().add(amount));
 
@@ -94,7 +93,8 @@ public class TransactionService {
         walletRepository.save(targetWallet);
     }
 
-    private Transaction createTransaction(UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+
+    private Transaction createTransaction(WalletId sourceWalletId, WalletId targetWalletId, Money amount) {
         Transaction transaction = new Transaction();
         transaction.setSourceWalletId(sourceWalletId);
         transaction.setTargetWalletId(targetWalletId);
@@ -106,9 +106,9 @@ public class TransactionService {
     private void publishTransactionCreatedEvent(Transaction transaction) {
         TransactionTreansferedEvent event = new TransactionTreansferedEvent(
                 transaction.getId(),
-                transaction.getSourceWalletId(),
-                transaction.getTargetWalletId(),
-                transaction.getAmount()
+                transaction.getSourceWalletId().getId(),
+                transaction.getTargetWalletId().getId(),
+                transaction.getAmount().getAmount()
         );
         transactionEventProducer.sendTransactionTransferedEvent(event);
     }

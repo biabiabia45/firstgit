@@ -1,0 +1,27 @@
+<mapper namespace="myproject.wallet.domain.transaction.mapper.TransactionMapper">
+
+    <select id="findBySourceWalletId" resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT * FROM transactions WHERE source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="findByTargetWalletId" resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT * FROM transactions WHERE target_wallet_id = #{targetWalletId}
+    </select>
+
+    <select id="findByIdAndSourceWalletId" resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT * FROM transactions WHERE id = #{transactionId} AND source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="findByIdAndTargetWalletId" resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT * FROM transactions WHERE id = #{transactionId} AND target_wallet_id = #{targetWalletId}
+    </select>
+
+    <select id="existsByIdAndSourceWalletId" resultType="int">
+        SELECT COUNT(*) FROM transactions WHERE id = #{transactionId} AND source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="existsByIdAndTargetWalletId" resultType="int">
+        SELECT COUNT(*) FROM transactions WHERE id = #{transactionId} AND target_wallet_id = #{targetWalletId}
+    </select>
+
+</mapper>

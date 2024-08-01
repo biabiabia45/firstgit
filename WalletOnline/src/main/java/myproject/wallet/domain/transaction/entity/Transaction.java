@@ -1,22 +1,24 @@
 package myproject.wallet.domain.transaction.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import myproject.wallet.domain.transaction.valueobject.Money;
+import myproject.wallet.domain.transaction.valueobject.WalletId;
 
-import java.math.BigDecimal;
 import java.util.UUID;
+
 @Entity
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID sourceWalletId; // 来源钱包ID
-    private UUID targetWalletId; // 目标钱包ID
-    private BigDecimal amount; // 交易金额
+    @Embedded
+    private WalletId sourceWalletId;
+    @Embedded
+    private WalletId targetWalletId;
+    @Embedded
+    private Money amount;
 
-    public Transaction(UUID id, UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+    public Transaction(UUID id, WalletId sourceWalletId, WalletId targetWalletId, Money amount) {
         this.id = id;
         this.sourceWalletId = sourceWalletId;
         this.targetWalletId = targetWalletId;
@@ -24,9 +26,7 @@ public class Transaction {
     }
 
     public Transaction() {
-
     }
-    // Getters and Setters
 
     public UUID getId() {
         return id;
@@ -36,27 +36,27 @@ public class Transaction {
         this.id = id;
     }
 
-    public UUID getSourceWalletId() {
+    public WalletId getSourceWalletId() {
         return sourceWalletId;
     }
 
-    public void setSourceWalletId(UUID sourceWalletId) {
+    public void setSourceWalletId(WalletId sourceWalletId) {
         this.sourceWalletId = sourceWalletId;
     }
 
-    public UUID getTargetWalletId() {
+    public WalletId getTargetWalletId() {
         return targetWalletId;
     }
 
-    public void setTargetWalletId(UUID targetWalletId) {
+    public void setTargetWalletId(WalletId targetWalletId) {
         this.targetWalletId = targetWalletId;
     }
 
-    public BigDecimal getAmount() {
+    public Money getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Money amount) {
         this.amount = amount;
     }
 }

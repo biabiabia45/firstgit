@@ -1,34 +1,20 @@
-package myproject.wallet.domain.wallet.valueobject;
-
-import myproject.wallet.domain.exceptions.InvalidAmountException;
+package myproject.wallet.domain.transaction.valueobject;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Money {
-
     private final BigDecimal amount;
 
     public Money(BigDecimal amount) {
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new InvalidAmountException("Amount must be non-negative");
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
         }
         this.amount = amount;
     }
 
     public BigDecimal getAmount() {
         return amount;
-    }
-
-    public Money add(Money other) {
-        return new Money(this.amount.add(other.amount));
-    }
-
-    public Money subtract(Money other) {
-        if (this.amount.compareTo(other.amount) < 0) {
-            throw new InvalidAmountException("Resulting amount cannot be negative");
-        }
-        return new Money(this.amount.subtract(other.amount));
     }
 
     @Override
@@ -49,8 +35,5 @@ public class Money {
         return "Money{" +
                 "amount=" + amount +
                 '}';
-    }
-
-    public boolean compareTo(Money amount) {
     }
 }
