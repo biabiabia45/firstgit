@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="myproject.wallet.domain.mapper.TransactionMapper">
+
+    <select id="findBySourceWalletId" parameterType="java.util.UUID"
+            resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT *
+        FROM transaction
+        WHERE source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="findByTargetWalletId" parameterType="java.util.UUID"
+            resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT *
+        FROM transaction
+        WHERE target_wallet_id = #{targetWalletId}
+    </select>
+
+    <select id="findByIdAndSourceWalletId" parameterType="map"
+            resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT *
+        FROM transaction
+        WHERE id = #{transactionId}
+          AND source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="findByIdAndTargetWalletId" parameterType="map"
+            resultType="myproject.wallet.domain.transaction.entity.Transaction">
+        SELECT *
+        FROM transaction
+        WHERE id = #{transactionId}
+          AND target_wallet_id = #{targetWalletId}
+    </select>
+
+    <select id="existsByIdAndSourceWalletId" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM transaction
+        WHERE id = #{transactionId}
+          AND source_wallet_id = #{sourceWalletId}
+    </select>
+
+    <select id="existsByIdAndTargetWalletId" parameterType="map" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM transaction
+        WHERE id = #{transactionId}
+          AND target_wallet_id = #{targetWalletId}
+    </select>
+
+    <insert id="save">
+        INSERT INTO transaction (id, source_wallet_id, target_wallet_id, amount)
+        VALUES(#{id}, #{sourceWalletId}, #{targetWalletId}, #{amount})
+    </insert>
+</mapper>

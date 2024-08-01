@@ -1,4 +1,4 @@
-package myproject.wallet.domain.user.valueobject;
+package myproject.wallet.domain.valueobject;
 
 import jakarta.persistence.Embeddable;
 

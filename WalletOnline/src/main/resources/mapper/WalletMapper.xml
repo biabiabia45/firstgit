@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="myproject.wallet.domain.repository.WalletMapper">
+<mapper namespace="myproject.wallet.domain.mapper.WalletMapper">
 
-    <select id="findByUserId" resultType="myproject.wallet.domain.wallet.entity.Wallet">
+    <select id="findByUserId" parameterType="java.util.UUID" resultType="myproject.wallet.domain.wallet.entity.Wallet">
         SELECT * FROM wallet WHERE user_id = #{userId}
     </select>
 
-    <select id="findById" resultType="myproject.wallet.domain.wallet.entity.Wallet">
+    <select id="findById" parameterType="java.util.UUID" resultType="myproject.wallet.domain.wallet.entity.Wallet">
         SELECT * FROM wallet WHERE id = #{walletId}
     </select>
 
@@ -17,11 +17,11 @@
         VALUES (#{id}, #{userId}, #{balance})
     </insert>
 
-    <select id="existsById" resultType="boolean">
+    <select id="existsById" parameterType="java.util.UUID" resultType="boolean">
         SELECT COUNT(*) > 0 FROM wallet WHERE id = #{id}
     </select>
 
-    <delete id="deleteById">
+    <delete id="deleteById" parameterType="java.util.UUID">
         DELETE FROM wallet WHERE id = #{id}
     </delete>
 

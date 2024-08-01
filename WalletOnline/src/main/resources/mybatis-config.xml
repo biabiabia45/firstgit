@@ -5,5 +5,11 @@
 <configuration>
     <mappers>
         <mapper resource="mapper/WalletMapper.xml"/>
+        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="mapper/TransactionMapper.xml"/>
+        <mapper resource="mapper/NotificationMapper.xml"/>
     </mappers>
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.UUIDTypeHandler" javaType="java.util.UUID"/>
+    </typeHandlers>
 </configuration>

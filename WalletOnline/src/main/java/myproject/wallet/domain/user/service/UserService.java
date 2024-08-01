@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import myproject.wallet.domain.exceptions.UserNotFoundException;
 import myproject.wallet.domain.repository.UserRepository;
 import myproject.wallet.domain.user.entity.User;
-import myproject.wallet.domain.user.valueobject.ContactInfo;
 import myproject.wallet.domain.user.events.UserCreatedEvent;
 import myproject.wallet.domain.user.events.UserDeletedEvent;
 import myproject.wallet.domain.user.events.UserUpdatedEvent;

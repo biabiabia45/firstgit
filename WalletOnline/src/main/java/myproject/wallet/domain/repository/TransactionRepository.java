@@ -18,4 +18,6 @@ public interface TransactionRepository{
     boolean existsByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId);
 
     boolean existsByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId);
+
+    void save(Transaction transaction);
 }

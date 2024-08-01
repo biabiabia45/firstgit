@@ -1,4 +1,4 @@
-package myproject.wallet.domain.wallet.valueobject;
+package myproject.wallet.domain.valueobject;
 
 import myproject.wallet.domain.exceptions.InvalidAmountException;
 

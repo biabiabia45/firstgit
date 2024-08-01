@@ -1,31 +1,33 @@
 package myproject.wallet.domain.transaction.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import myproject.wallet.domain.valueobject.Money;
+import myproject.wallet.domain.wallet.entity.Wallet;
+import myproject.wallet.domain.exceptions.InsufficientFundsException;
+import myproject.wallet.domain.exceptions.InvalidAmountException;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+
 @Entity
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private UUID sourceWalletId; // 来源钱包ID
-    private UUID targetWalletId; // 目标钱包ID
-    private BigDecimal amount; // 交易金额
+    private UUID sourceWalletId;
+    private UUID targetWalletId;
+    @Embedded
+    private Money amount;
 
-    public Transaction(UUID id, UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+    public Transaction(UUID id, UUID sourceWalletId, UUID targetWalletId, Money amount) {
         this.id = id;
         this.sourceWalletId = sourceWalletId;
         this.targetWalletId = targetWalletId;
         this.amount = amount;
     }
 
-    public Transaction() {
+    public Transaction() {}
 
-    }
     // Getters and Setters
 
     public UUID getId() {
@@ -52,11 +54,26 @@ public class Transaction {
         this.targetWalletId = targetWalletId;
     }
 
-    public BigDecimal getAmount() {
+    public Money getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Money amount) {
         this.amount = amount;
+    }
+
+    public void validateTransferAmount() {
+        if (amount.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Transfer amount must be positive");
+        }
+    }
+
+    public void executeTransfer(Wallet sourceWallet, Wallet targetWallet) {
+        if (sourceWallet.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
+            throw new InsufficientFundsException("Insufficient funds in source wallet");
+        }
+
+        sourceWallet.setBalance(sourceWallet.getBalance().subtract(amount));
+        targetWallet.setBalance(targetWallet.getBalance().add(amount));
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myproject.wallet.domain.mapper.NotificationMapper">
+
+    <select id="findByUserIdAndWalletId" resultType="myproject.wallet.domain.notification.entity.Notification">
+        SELECT * FROM notification
+        WHERE user_id = #{userId} AND wallet_id = #{walletId}
+    </select>
+
+    <select id="findByUserIdAndWalletIdAndId" resultType="myproject.wallet.domain.notification.entity.Notification">
+        SELECT * FROM notification
+        WHERE user_id = #{userId} AND wallet_id = #{walletId} AND id = #{id}
+    </select>
+
+    <select id="existsByUserIdAndWalletIdAndId" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM notification
+        WHERE user_id = #{userId} AND wallet_id = #{walletId} AND id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM notification
+        WHERE id = #{id}
+    </delete>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notification (user_id, wallet_id, message, timestamp, read)
+        VALUES (#{userId}, #{walletId}, #{message}, #{timestamp}, #{read})
+    </insert>
+
+</mapper>

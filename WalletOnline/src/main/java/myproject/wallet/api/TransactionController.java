@@ -2,6 +2,7 @@ package myproject.wallet.api;
 
 import myproject.wallet.domain.transaction.entity.Transaction;
 import myproject.wallet.domain.transaction.service.TransactionService;
+import myproject.wallet.domain.valueobject.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class TransactionController {
     public ResponseEntity<Void> transfer(
             @PathVariable UUID walletId,
             @RequestParam UUID targetWalletId,
-            @RequestParam BigDecimal amount) {
+            @RequestParam Money amount) {
         try {
             transactionService.transfer(walletId, targetWalletId, amount);
             return ResponseEntity.ok().build();

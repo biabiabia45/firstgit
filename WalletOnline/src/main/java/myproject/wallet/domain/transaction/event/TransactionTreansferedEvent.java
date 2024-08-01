@@ -1,6 +1,7 @@
 package myproject.wallet.domain.transaction.event;
 
-import java.math.BigDecimal;
+import myproject.wallet.domain.valueobject.Money;
+
 import java.util.UUID;
 
 public class TransactionTreansferedEvent {
@@ -8,9 +9,9 @@ public class TransactionTreansferedEvent {
     private final UUID transactionId;
     private final UUID sourceWalletId;
     private final UUID targetWalletId;
-    private final BigDecimal amount;
+    private final Money amount;
 
-    public TransactionTreansferedEvent(UUID transactionId, UUID sourceWalletId, UUID targetWalletId, BigDecimal amount) {
+    public TransactionTreansferedEvent(UUID transactionId, UUID sourceWalletId, UUID targetWalletId, Money amount) {
         this.transactionId = transactionId;
         this.sourceWalletId = sourceWalletId;
         this.targetWalletId = targetWalletId;
@@ -29,7 +30,7 @@ public class TransactionTreansferedEvent {
         return targetWalletId;
     }
 
-    public BigDecimal getAmount() {
+    public Money getAmount() {
         return amount;
     }
 }

@@ -3,7 +3,7 @@ package myproject.wallet.domain.wallet.entity;
 import jakarta.persistence.*;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.exceptions.InvalidAmountException;
-import myproject.wallet.domain.wallet.valueobject.Money;
+import myproject.wallet.domain.valueobject.Money;
 
 import java.math.BigDecimal;
 import java.util.UUID;
