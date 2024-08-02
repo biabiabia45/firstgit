@@ -2,9 +2,6 @@ package myproject.wallet.domain.wallet.events;
 
 import myproject.wallet.domain.valueobject.Money;
 
-import java.math.BigDecimal;
-import java.util.UUID;
-
 public class WalletWithdrawnEvent {
     private Long walletId;
     private Money amount;

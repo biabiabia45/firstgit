@@ -3,6 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <typeHandlers>
+        <typeHandler handler="myproject.wallet.infrastructure.typehandler.MoneyTypeHandler" javaType="myproject.wallet.domain.valueobject.Money"/>
+    </typeHandlers>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -14,9 +17,4 @@
             </dataSource>
         </environment>
     </environments>
-    <mappers>
-        <mapper resource="myproject/wallet/domain/mapper/TransactionMapper.xml"/>
-        <mapper resource="myproject/wallet/domain/mapper/UserMapper.xml"/>
-        <mapper resource="myproject/wallet/domain/mapper/WalletMapper.xml"/>
-    </mappers>
 </configuration>

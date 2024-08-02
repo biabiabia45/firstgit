@@ -2,8 +2,6 @@ package myproject.wallet.domain.transaction.event;
 
 import myproject.wallet.domain.valueobject.Money;
 
-import java.util.UUID;
-
 public class TransactionTreansferedEvent {
 
     private final Long transactionId;

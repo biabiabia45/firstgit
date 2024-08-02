@@ -5,18 +5,17 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Mapper
 public interface WalletMapper {
 
-    @Select("SELECT * FROM wallet WHERE user_id = #{userId}")
+    @Select("SELECT id, user_id, balance FROM wallet WHERE user_id = #{userId}")
     List<Wallet> findByUserId(Long userId);
 
-    @Select("SELECT * FROM wallet WHERE id = #{walletId}")
+    @Select("SELECT id, user_id, balance FROM wallet WHERE id = #{walletId}")
     Optional<Wallet> findById(Long walletId);
 
-    @Insert("INSERT INTO wallet (id, user_id, balance) VALUES (#{id}, #{userId}, #{balance})")
+    @Insert("INSERT INTO wallet (user_id, balance) VALUES (#{userId}, #{balance, typeHandler=myproject.wallet.infrastructure.typehandler.MoneyTypeHandler})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void save(Wallet wallet);
 
@@ -26,6 +25,6 @@ public interface WalletMapper {
     @Delete("DELETE FROM wallet WHERE id = #{id}")
     void deleteById(Long id);
 
-    @Select("SELECT * FROM wallet")
+    @Select("SELECT id, user_id, balance FROM wallet")
     List<Wallet> findAll();
 }

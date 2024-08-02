@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -84,10 +83,10 @@ public class UserService {
         }
     }
 
-    public void changePassword(Long userId, String oldPassword, String newPassword) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
-        user.updatePassword(oldPassword, newPassword);
-        userRepository.save(user);
-    }
+//    public void changePassword(Long userId, String oldPassword, String newPassword) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
+//        user.updatePassword(oldPassword, newPassword);
+//        userRepository.save(user);
+//    }
 }

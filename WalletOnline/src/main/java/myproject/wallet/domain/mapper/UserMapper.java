@@ -8,22 +8,23 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM users WHERE id = #{id}")
+
+    @Select("SELECT id, username, email, password, address FROM user WHERE id = #{id}")
     Optional<User> findUserById(@Param("id") Long id);
 
-    @Select("SELECT * FROM users")
+    @Select("SELECT id, username, email, password, address FROM user")
     List<User> findAllUser();
 
-    @Insert("INSERT INTO users (id, username, email, password, address) VALUES (#{id}, #{username}, #{email}, #{password}, #{address})")
+    @Insert("INSERT INTO user (username, email, password, address) VALUES (#{username}, #{email}, #{password}, #{address})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertUser(User user);
 
-    @Update("UPDATE users SET username=#{username}, email=#{email}, password=#{password}, address=#{address} WHERE id=#{id}")
+    @Update("UPDATE user SET username=#{username}, email=#{email}, password=#{password}, address=#{address} WHERE id=#{id}")
     void updateUser(User user);
 
-    @Select("SELECT EXISTS(SELECT 1 FROM users WHERE id = #{id})")
+    @Select("SELECT EXISTS(SELECT 1 FROM user WHERE id = #{id})")
     boolean existsUserById(@Param("id") Long id);
 
-    @Delete("DELETE FROM users WHERE id = #{id}")
+    @Delete("DELETE FROM user WHERE id = #{id}")
     void deleteUserById(@Param("id") Long id);
 }

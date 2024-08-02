@@ -4,7 +4,6 @@ import myproject.wallet.domain.wallet.entity.Wallet;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface WalletRepository{
     List<Wallet> findByUserId(Long userId);

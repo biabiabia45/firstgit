@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/wallet-online/wallets/{walletId}/transactions")
@@ -51,7 +50,8 @@ public class TransactionController {
             @RequestParam Long targetWalletId,
             @RequestParam Money amount) {
         try {
-            transactionService.transfer(walletId, targetWalletId, amount);
+            Money money = amount;
+            transactionService.transfer(walletId, targetWalletId, money);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             // Handle errors (e.g., insufficient funds, invalid wallets)

@@ -1,22 +1,15 @@
 package myproject.wallet.domain.user.entity;
 
-import jakarta.persistence.*;
 import myproject.wallet.domain.valueobject.ContactInfo;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.UUID;
-
-@Entity
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String username;
     private String password;
-    @Embedded
     private ContactInfo contactInfo;
 
-    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public Long getId() {
         return id;
@@ -38,9 +31,9 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = encryptPassword(password);
-    }
+//    public void setPassword(String password) {
+//        this.password = encryptPassword(password);
+//    }
 
     public ContactInfo getContactInfo() {
         return contactInfo;
@@ -50,18 +43,18 @@ public class User {
         this.contactInfo = contactInfo;
     }
 
-    public boolean checkPassword(String rawPassword) {
-        return passwordEncoder.matches(rawPassword, this.password);
-    }
+//    public boolean checkPassword(String rawPassword) {
+//        return passwordEncoder.matches(rawPassword, this.password);
+//    }
+//
+//    private String encryptPassword(String rawPassword) {
+//        return passwordEncoder.encode(rawPassword);
+//    }
 
-    private String encryptPassword(String rawPassword) {
-        return passwordEncoder.encode(rawPassword);
-    }
-
-    public void updatePassword(String oldPassword, String newPassword) {
-        if (!checkPassword(oldPassword)) {
-            throw new IllegalArgumentException("Old password is incorrect.");
-        }
-        this.password = encryptPassword(newPassword);
-    }
+//    public void updatePassword(String oldPassword, String newPassword) {
+//        if (!checkPassword(oldPassword)) {
+//            throw new IllegalArgumentException("Old password is incorrect.");
+//        }
+//        this.password = encryptPassword(newPassword);
+//    }
 }

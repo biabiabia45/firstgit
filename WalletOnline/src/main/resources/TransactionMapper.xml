@@ -49,6 +49,7 @@
     <!-- 插入交易记录 -->
     <insert id="save" parameterType="myproject.wallet.domain.transaction.entity.Transaction">
         INSERT INTO transaction (source_wallet_id, target_wallet_id, amount)
-        VALUES (#{sourceWalletId}, #{targetWalletId}, #{amount})
+        VALUES (#{sourceWalletId}, #{targetWalletId}, #{amount, typeHandler=myproject.wallet.infrastructure.typehandler.MoneyTypeHandler})
     </insert>
+
 </mapper>

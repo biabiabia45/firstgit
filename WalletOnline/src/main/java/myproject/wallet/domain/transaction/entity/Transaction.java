@@ -1,20 +1,16 @@
 package myproject.wallet.domain.transaction.entity;
 
-import jakarta.persistence.*;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.valueobject.Money;
 import myproject.wallet.domain.wallet.entity.Wallet;
 
 import java.math.BigDecimal;
 
-@Entity
 public class Transaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private Long sourceWalletId;
     private Long targetWalletId;
-    @Embedded
     private Money amount;
 
     public Transaction(Long sourceWalletId, Long targetWalletId, Money amount) {

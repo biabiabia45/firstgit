@@ -1,24 +1,16 @@
 package myproject.wallet.domain.wallet.entity;
 
-import jakarta.persistence.*;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.exceptions.InvalidAmountException;
 import myproject.wallet.domain.valueobject.Money;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
-@Entity
 public class Wallet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "amount"))
-    })
+
     private Money balance;
 
     public Long getId() {

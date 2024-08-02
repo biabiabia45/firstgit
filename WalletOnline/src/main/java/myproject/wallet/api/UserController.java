@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -77,18 +76,18 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
-        try {
-            userService.changePassword(id, oldPassword, newPassword);
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build(); // 404 Not Found
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // 400 Bad Request
-        } catch (Exception e) {
-            log.error("Error changing password", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error
-        }
-    }
+//    @PatchMapping("/{id}/password")
+//    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
+//        try {
+//            userService.changePassword(id, oldPassword, newPassword);
+//            return ResponseEntity.noContent().build(); // 204 No Content
+//        } catch (UserNotFoundException e) {
+//            return ResponseEntity.notFound().build(); // 404 Not Found
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(null); // 400 Bad Request
+//        } catch (Exception e) {
+//            log.error("Error changing password", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error
+//        }
+//    }
 }

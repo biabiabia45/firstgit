@@ -4,7 +4,6 @@ import myproject.wallet.domain.transaction.entity.Transaction;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface TransactionRepository{
     List<Transaction> findBySourceWalletId(Long sourceWalletId);

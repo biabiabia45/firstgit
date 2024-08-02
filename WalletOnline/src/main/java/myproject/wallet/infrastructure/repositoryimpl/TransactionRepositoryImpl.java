@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -32,12 +31,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     @Override
     public Optional<Transaction> findByIdAndSourceWalletId(Long transactionId, Long sourceWalletId) {
-        return Optional.ofNullable(transactionMapper.findByIdAndSourceWalletId(transactionId, sourceWalletId).orElse(null));
+        return transactionMapper.findByIdAndSourceWalletId(transactionId, sourceWalletId);
     }
 
     @Override
     public Optional<Transaction> findByIdAndTargetWalletId(Long transactionId, Long targetWalletId) {
-        return Optional.ofNullable(transactionMapper.findByIdAndTargetWalletId(transactionId, targetWalletId).orElse(null));
+        return transactionMapper.findByIdAndTargetWalletId(transactionId, targetWalletId);
     }
 
     @Override
