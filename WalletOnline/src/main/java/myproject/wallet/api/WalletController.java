@@ -1,5 +1,6 @@
 package myproject.wallet.api;
 
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.exceptions.InvalidAmountException;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
+@Api(tags = "账户管理")
 @RequestMapping("/wallet-online/users/{userId}/wallets")
 public class WalletController {
 

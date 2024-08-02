@@ -1,5 +1,6 @@
 package myproject.wallet.api;
 
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import myproject.wallet.domain.exceptions.UserNotFoundException;
 import myproject.wallet.domain.user.entity.User;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @Slf4j
+@Api(tags = "用户管理")
 @RequestMapping("/wallet-online/users")
 public class UserController {
 
