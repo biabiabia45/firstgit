@@ -14,9 +14,4 @@
             </dataSource>
         </environment>
     </environments>
-    <mappers>
-        <mapper resource="myproject/wallet/domain/mapper/TransactionMapper.xml"/>
-        <mapper resource="myproject/wallet/domain/mapper/UserMapper.xml"/>
-        <mapper resource="myproject/wallet/domain/mapper/WalletMapper.xml"/>
-    </mappers>
 </configuration>

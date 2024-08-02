@@ -1,7 +1,5 @@
 package myproject.wallet.domain.user.events;
 
-import java.util.UUID;
-
 public class UserUpdatedEvent {
     private final Long userId;
 

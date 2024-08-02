@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import myproject.wallet.domain.valueobject.ContactInfo;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.UUID;
-
 @Entity
 public class User {
     @Id
