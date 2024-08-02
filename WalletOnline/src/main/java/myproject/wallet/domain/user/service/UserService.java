@@ -30,7 +30,7 @@ public class UserService {
         this.userEventProducer = userEventProducer;
     }
 
-    public Optional<User> getUserById(UUID id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -69,7 +69,7 @@ public class UserService {
         }
     }
 
-    public void deleteUser(UUID id) {
+    public void deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             try {
@@ -84,7 +84,7 @@ public class UserService {
         }
     }
 
-    public void changePassword(UUID userId, String oldPassword, String newPassword) {
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
         user.updatePassword(oldPassword, newPassword);

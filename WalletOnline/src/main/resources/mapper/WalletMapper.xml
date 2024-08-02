@@ -4,29 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myproject.wallet.domain.mapper.WalletMapper">
 
-    <select id="findByUserId" parameterType="java.util.UUID" resultType="myproject.wallet.domain.wallet.entity.Wallet">
-        SELECT * FROM wallet WHERE user_id = #{userId}
+    <select id="findByUserId" resultType="myproject.wallet.domain.wallet.entity.Wallet">
+        SELECT *
+        FROM wallet
+        WHERE user_id = #{userId}
     </select>
 
-    <select id="findById" parameterType="java.util.UUID" resultType="myproject.wallet.domain.wallet.entity.Wallet">
-        SELECT * FROM wallet WHERE id = #{walletId}
+    <select id="findById" resultType="myproject.wallet.domain.wallet.entity.Wallet">
+        SELECT *
+        FROM wallet
+        WHERE id = #{walletId}
     </select>
 
-    <insert id="save">
-        INSERT INTO wallet (id, user_id, balance)
-        VALUES (#{id}, #{userId}, #{balance})
+    <insert id="save" parameterType="myproject.wallet.domain.wallet.entity.Wallet">
+        INSERT INTO wallet (id, user_id, amount)
+        VALUES (#{id}, #{userId}, #{balance.amount})
     </insert>
 
-    <select id="existsById" parameterType="java.util.UUID" resultType="boolean">
-        SELECT COUNT(*) > 0 FROM wallet WHERE id = #{id}
+    <select id="existsById" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM wallet
+        WHERE id = #{id}
     </select>
 
-    <delete id="deleteById" parameterType="java.util.UUID">
-        DELETE FROM wallet WHERE id = #{id}
+    <delete id="deleteById">
+        DELETE
+        FROM wallet
+        WHERE id = #{id}
     </delete>
 
     <select id="findAll" resultType="myproject.wallet.domain.wallet.entity.Wallet">
-        SELECT * FROM wallet
+        SELECT *
+        FROM wallet
     </select>
 
 </mapper>

@@ -13,35 +13,27 @@ public class Wallet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private UUID userId;
+    private Long id;
+    private Long userId;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "amount", column = @Column(name = "amount"))
+    })
     private Money balance;
 
-    // Constructors
-    public Wallet() {
-    }
-
-    public Wallet(UUID id, UUID userId, Money balance) {
-        this.id = id;
-        this.userId = userId;
-        this.balance = balance;
-    }
-
-    // Getters and setters
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

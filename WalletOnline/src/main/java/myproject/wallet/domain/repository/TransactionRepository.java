@@ -7,17 +7,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TransactionRepository{
-    List<Transaction> findBySourceWalletId(UUID sourceWalletId);
+    List<Transaction> findBySourceWalletId(Long sourceWalletId);
 
-    List<Transaction> findByTargetWalletId(UUID targetWalletId);
+    List<Transaction> findByTargetWalletId(Long targetWalletId);
 
-    Optional<Transaction> findByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId);
+    Optional<Transaction> findByIdAndSourceWalletId(Long transactionId, Long sourceWalletId);
 
-    Optional<Transaction> findByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId);
+    Optional<Transaction> findByIdAndTargetWalletId(Long transactionId, Long targetWalletId);
 
-    boolean existsByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId);
+    boolean existsByIdAndSourceWalletId(Long transactionId, Long sourceWalletId);
 
-    boolean existsByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId);
+    boolean existsByIdAndTargetWalletId(Long transactionId, Long targetWalletId);
 
     void save(Transaction transaction);
 }

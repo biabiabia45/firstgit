@@ -6,27 +6,27 @@ import java.util.UUID;
 
 public class TransactionTreansferedEvent {
 
-    private final UUID transactionId;
-    private final UUID sourceWalletId;
-    private final UUID targetWalletId;
+    private final Long transactionId;
+    private final Long sourceWalletId;
+    private final Long targetWalletId;
     private final Money amount;
 
-    public TransactionTreansferedEvent(UUID transactionId, UUID sourceWalletId, UUID targetWalletId, Money amount) {
+    public TransactionTreansferedEvent(Long transactionId, Long sourceWalletId, Long targetWalletId, Money amount) {
         this.transactionId = transactionId;
         this.sourceWalletId = sourceWalletId;
         this.targetWalletId = targetWalletId;
         this.amount = amount;
     }
 
-    public UUID getTransactionId() {
+    public Long getTransactionId() {
         return transactionId;
     }
 
-    public UUID getSourceWalletId() {
+    public Long getSourceWalletId() {
         return sourceWalletId;
     }
 
-    public UUID getTargetWalletId() {
+    public Long getTargetWalletId() {
         return targetWalletId;
     }
 

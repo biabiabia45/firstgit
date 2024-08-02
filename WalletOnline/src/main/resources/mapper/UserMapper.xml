@@ -5,40 +5,43 @@
 <mapper namespace="myproject.wallet.domain.mapper.UserMapper">
 
     <!-- 查询用户信息通过ID -->
-    <select id="findById" parameterType="java.util.UUID" resultType="myproject.wallet.domain.user.entity.User">
-        SELECT * FROM user
+    <select id="findUserById" resultType="myproject.wallet.domain.user.entity.User">
+        SELECT *
+        FROM user
         WHERE id = #{id}
     </select>
 
     <!-- 查询所有用户信息 -->
-    <select id="findAll" resultType="myproject.wallet.domain.user.entity.User">
-        SELECT * FROM user
+    <select id="findAllUser" resultType="myproject.wallet.domain.user.entity.User">
+        SELECT *
+        FROM user
     </select>
 
     <!-- 插入用户信息 -->
-    <insert id="insert" parameterType="myproject.wallet.domain.user.entity.User">
+    <insert id="insertUser" parameterType="myproject.wallet.domain.user.entity.User">
         INSERT INTO user (id, username, email, password, address)
         VALUES (#{id}, #{username}, #{email}, #{password}, #{address})
     </insert>
 
     <!-- 更新用户信息 -->
-    <update id="update" parameterType="myproject.wallet.domain.user.entity.User">
+    <update id="updateUser" parameterType="myproject.wallet.domain.user.entity.User">
         UPDATE user
         SET username = #{username},
-        email = #{email},
-        password = #{password},
-        address = #{address}
+            email    = #{email},
+            password = #{password},
+            address  = #{address}
         WHERE id = #{id}
     </update>
 
     <!-- 检查用户是否存在 -->
-    <select id="existsById" parameterType="java.util.UUID" resultType="boolean">
+    <select id="existsUserById" resultType="boolean">
         SELECT EXISTS(SELECT 1 FROM user WHERE id = #{id})
     </select>
 
     <!-- 删除用户信息 -->
-    <delete id="deleteById" parameterType="java.util.UUID">
-        DELETE FROM user
+    <delete id="deleteUserById">
+        DELETE
+        FROM user
         WHERE id = #{id}
     </delete>
 

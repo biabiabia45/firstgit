@@ -1,56 +1,53 @@
 package myproject.wallet.domain.transaction.entity;
 
 import jakarta.persistence.*;
+import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.valueobject.Money;
 import myproject.wallet.domain.wallet.entity.Wallet;
-import myproject.wallet.domain.exceptions.InsufficientFundsException;
-import myproject.wallet.domain.exceptions.InvalidAmountException;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    private UUID sourceWalletId;
-    private UUID targetWalletId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long sourceWalletId;
+    private Long targetWalletId;
     @Embedded
     private Money amount;
 
-    public Transaction(UUID id, UUID sourceWalletId, UUID targetWalletId, Money amount) {
-        this.id = id;
+    public Transaction(Long sourceWalletId, Long targetWalletId, Money amount) {
         this.sourceWalletId = sourceWalletId;
         this.targetWalletId = targetWalletId;
         this.amount = amount;
     }
 
-    public Transaction() {}
+    public Transaction() {
 
-    // Getters and Setters
+    }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public UUID getSourceWalletId() {
+    public Long getSourceWalletId() {
         return sourceWalletId;
     }
 
-    public void setSourceWalletId(UUID sourceWalletId) {
+    public void setSourceWalletId(Long sourceWalletId) {
         this.sourceWalletId = sourceWalletId;
     }
 
-    public UUID getTargetWalletId() {
+    public Long getTargetWalletId() {
         return targetWalletId;
     }
 
-    public void setTargetWalletId(UUID targetWalletId) {
+    public void setTargetWalletId(Long targetWalletId) {
         this.targetWalletId = targetWalletId;
     }
 

@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public interface UserRepository {
 
-    Optional<User> findById(UUID id);
+    Optional<User> findById(Long id);
 
     List<User> findAll();
 
     User save(User user);
 
-    boolean existsById(UUID id);
+    boolean existsById(Long id);
 
-    void deleteById(UUID id);
+    void deleteById(Long id);
 }

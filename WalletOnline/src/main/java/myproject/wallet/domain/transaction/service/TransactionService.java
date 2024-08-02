@@ -34,28 +34,28 @@ public class TransactionService {
         this.transactionEventProducer = transactionEventProducer;
     }
 
-    public List<Transaction> getAllTransactionsBySourceWalletId(UUID sourceWalletId) {
+    public List<Transaction> getAllTransactionsBySourceWalletId(Long sourceWalletId) {
         return transactionRepository.findBySourceWalletId(sourceWalletId);
     }
 
-    public List<Transaction> getAllTransactionsByTargetWalletId(UUID targetWalletId) {
+    public List<Transaction> getAllTransactionsByTargetWalletId(Long targetWalletId) {
         return transactionRepository.findByTargetWalletId(targetWalletId);
     }
 
-    public Optional<Transaction> getTransactionByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId) {
+    public Optional<Transaction> getTransactionByIdAndSourceWalletId(Long transactionId, Long sourceWalletId) {
         return transactionRepository.findByIdAndSourceWalletId(transactionId, sourceWalletId);
     }
 
-    public Optional<Transaction> getTransactionByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId) {
+    public Optional<Transaction> getTransactionByIdAndTargetWalletId(Long transactionId, Long targetWalletId) {
         return transactionRepository.findByIdAndTargetWalletId(transactionId, targetWalletId);
     }
 
     @Transactional
-    public void transfer(UUID sourceWalletId, UUID targetWalletId, Money amount) {
+    public void transfer(Long sourceWalletId, Long targetWalletId, Money amount) {
         Wallet sourceWallet = findWalletById(sourceWalletId);
         Wallet targetWallet = findWalletById(targetWalletId);
 
-        Transaction transaction = new Transaction(UUID.randomUUID(), sourceWalletId, targetWalletId, amount);
+        Transaction transaction = new Transaction(sourceWalletId, targetWalletId, amount);
 
         transaction.validateTransferAmount();
         transaction.executeTransfer(sourceWallet, targetWallet);
@@ -67,7 +67,7 @@ public class TransactionService {
         publishTransactionCreatedEvent(transaction);
     }
 
-    private Wallet findWalletById(UUID walletId) {
+    private Wallet findWalletById(Long walletId) {
         return walletRepository.findById(walletId)
                 .orElseThrow(() -> new WalletNotFoundException("Wallet not found with ID: " + walletId));
     }

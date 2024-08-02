@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import myproject.wallet.domain.exceptions.InsufficientFundsException;
 import myproject.wallet.domain.exceptions.InvalidAmountException;
 import myproject.wallet.domain.exceptions.WalletNotFoundException;
+import myproject.wallet.domain.valueobject.Money;
 import myproject.wallet.domain.wallet.entity.Wallet;
 import myproject.wallet.domain.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,13 @@ public class WalletController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Wallet> getWalletById(@PathVariable UUID id) {
+    public ResponseEntity<Wallet> getWalletById(@PathVariable Long id) {
         Optional<Wallet> wallet = walletService.getWalletById(id);
         return wallet.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Wallet> createWallet(@PathVariable UUID userId, @RequestBody Wallet wallet) {
+    public ResponseEntity<Wallet> createWallet(@PathVariable Long userId, @RequestBody Wallet wallet) {
         try {
             wallet.setUserId(userId);
             Wallet createdWallet = walletService.createWallet(wallet);
@@ -56,7 +57,7 @@ public class WalletController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Wallet> updateWallet(@PathVariable UUID userId, @PathVariable UUID id, @RequestBody Wallet wallet) {
+    public ResponseEntity<Wallet> updateWallet(@PathVariable Long userId, @PathVariable Long id, @RequestBody Wallet wallet) {
         wallet.setId(id);
         wallet.setUserId(userId);
         try {
@@ -71,7 +72,7 @@ public class WalletController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWallet(@PathVariable UUID userId, @PathVariable UUID id) {
+    public ResponseEntity<Void> deleteWallet(@PathVariable Long userId, @PathVariable Long id) {
         try {
             walletService.deleteWallet(id);
             return ResponseEntity.noContent().build(); // 204 No Content
@@ -84,7 +85,7 @@ public class WalletController {
     }
 
     @PostMapping("/{id}/deposit")
-    public ResponseEntity<Void> deposit(@PathVariable UUID userId, @PathVariable UUID id, @RequestParam BigDecimal amount) {
+    public ResponseEntity<Void> deposit(@PathVariable Long userId, @PathVariable Long id, @RequestParam Money amount) {
         try {
             walletService.deposit(id, amount);
             return ResponseEntity.ok().build(); // 200 OK
@@ -99,7 +100,7 @@ public class WalletController {
     }
 
     @PostMapping("/{id}/withdraw")
-    public ResponseEntity<Void> withdraw(@PathVariable UUID userId, @PathVariable UUID id, @RequestParam BigDecimal amount) {
+    public ResponseEntity<Void> withdraw(@PathVariable Long userId, @PathVariable Long id, @RequestParam Money amount) {
         try {
             walletService.withdraw(id, amount);
             return ResponseEntity.ok().build(); // 200 OK

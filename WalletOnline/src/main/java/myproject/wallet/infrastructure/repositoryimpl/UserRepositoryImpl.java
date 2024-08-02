@@ -21,32 +21,32 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(UUID id) {
-        return userMapper.findById(id);
+    public Optional<User> findById(Long id) {
+        return userMapper.findUserById(id);
     }
 
     @Override
     public List<User> findAll() {
-        return userMapper.findAll();
+        return userMapper.findAllUser();
     }
 
     @Override
     public User save(User user) {
         if (user.getId() == null) {
-            userMapper.insert(user);
+            userMapper.insertUser(user);
         } else {
-            userMapper.update(user);
+            userMapper.updateUser(user);
         }
         return user;
     }
 
     @Override
-    public boolean existsById(UUID id) {
-        return userMapper.existsById(id);
+    public boolean existsById(Long id) {
+        return userMapper.existsUserById(id);
     }
 
     @Override
-    public void deleteById(UUID id) {
-        userMapper.deleteById(id);
+    public void deleteById(Long id) {
+        userMapper.deleteUserById(id);
     }
 }

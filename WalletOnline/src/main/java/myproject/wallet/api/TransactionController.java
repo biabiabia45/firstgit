@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,20 +24,20 @@ public class TransactionController {
     }
 
     @GetMapping("/source")
-    public ResponseEntity<List<Transaction>> getAllTransactionsBySourceWalletId(@PathVariable UUID walletId) {
+    public ResponseEntity<List<Transaction>> getAllTransactionsBySourceWalletId(@PathVariable Long walletId) {
         List<Transaction> transactions = transactionService.getAllTransactionsBySourceWalletId(walletId);
         return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/target")
-    public ResponseEntity<List<Transaction>> getAllTransactionsByTargetWalletId(@PathVariable UUID walletId) {
+    public ResponseEntity<List<Transaction>> getAllTransactionsByTargetWalletId(@PathVariable Long walletId) {
         List<Transaction> transactions = transactionService.getAllTransactionsByTargetWalletId(walletId);
         return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/{transactionId}")
     public ResponseEntity<Transaction> getTransactionById(
-            @PathVariable UUID walletId, @PathVariable UUID transactionId) {
+            @PathVariable Long walletId, @PathVariable Long transactionId) {
         Optional<Transaction> transaction = transactionService.getTransactionByIdAndSourceWalletId(transactionId, walletId);
         if (transaction.isEmpty()) {
             transaction = transactionService.getTransactionByIdAndTargetWalletId(transactionId, walletId);
@@ -48,8 +47,8 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     public ResponseEntity<Void> transfer(
-            @PathVariable UUID walletId,
-            @RequestParam UUID targetWalletId,
+            @PathVariable Long walletId,
+            @RequestParam Long targetWalletId,
             @RequestParam Money amount) {
         try {
             transactionService.transfer(walletId, targetWalletId, amount);

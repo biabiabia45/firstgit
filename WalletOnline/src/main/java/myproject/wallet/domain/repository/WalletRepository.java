@@ -7,15 +7,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface WalletRepository{
-    List<Wallet> findByUserId(UUID userId);
+    List<Wallet> findByUserId(Long userId);
 
-    Optional<Wallet> findById(UUID walletId);
+    Optional<Wallet> findById(Long walletId);
 
     Wallet save(Wallet wallet);
 
-    boolean existsById(UUID id);
+    boolean existsById(Long id);
 
-    void deleteById(UUID id);
+    void deleteById(Long id);
 
     List<Wallet> findAll();
 }

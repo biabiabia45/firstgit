@@ -31,11 +31,11 @@ public class WalletService {
         this.walletEventProducer = walletEventProducer;
     }
 
-    public Optional<Wallet> getWalletById(UUID id) {
+    public Optional<Wallet> getWalletById(Long id) {
         return walletRepository.findById(id);
     }
 
-    public List<Wallet> getWalletsByUserId(UUID userId) {
+    public List<Wallet> getWalletsByUserId(Long userId) {
         return walletRepository.findByUserId(userId);
     }
 
@@ -76,7 +76,7 @@ public class WalletService {
         }
     }
 
-    public void deleteWallet(UUID id) {
+    public void deleteWallet(Long id) {
         if (walletRepository.existsById(id)) {
             walletRepository.deleteById(id);
             try {
@@ -92,10 +92,10 @@ public class WalletService {
     }
 
     // Methods to manage balance using the new Wallet methods
-    public void deposit(UUID walletId, BigDecimal amount) {
+    public void deposit(Long walletId, Money amount) {
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
 
-        wallet.deposit(new Money(amount));
+        wallet.deposit(amount);
         walletRepository.save(wallet);
 
         // Publish an event
@@ -108,10 +108,10 @@ public class WalletService {
         }
     }
 
-    public void withdraw(UUID walletId, BigDecimal amount) {
+    public void withdraw(Long walletId, Money amount) {
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
 
-        wallet.withdraw(new Money(amount));
+        wallet.withdraw(amount);
         walletRepository.save(wallet);
 
         // Publish an event

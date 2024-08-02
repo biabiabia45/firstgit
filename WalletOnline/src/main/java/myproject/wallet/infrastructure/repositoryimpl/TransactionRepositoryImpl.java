@@ -21,32 +21,32 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findBySourceWalletId(UUID sourceWalletId) {
+    public List<Transaction> findBySourceWalletId(Long sourceWalletId) {
         return transactionMapper.findBySourceWalletId(sourceWalletId);
     }
 
     @Override
-    public List<Transaction> findByTargetWalletId(UUID targetWalletId) {
+    public List<Transaction> findByTargetWalletId(Long targetWalletId) {
         return transactionMapper.findByTargetWalletId(targetWalletId);
     }
 
     @Override
-    public Optional<Transaction> findByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId) {
+    public Optional<Transaction> findByIdAndSourceWalletId(Long transactionId, Long sourceWalletId) {
         return Optional.ofNullable(transactionMapper.findByIdAndSourceWalletId(transactionId, sourceWalletId).orElse(null));
     }
 
     @Override
-    public Optional<Transaction> findByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId) {
+    public Optional<Transaction> findByIdAndTargetWalletId(Long transactionId, Long targetWalletId) {
         return Optional.ofNullable(transactionMapper.findByIdAndTargetWalletId(transactionId, targetWalletId).orElse(null));
     }
 
     @Override
-    public boolean existsByIdAndSourceWalletId(UUID transactionId, UUID sourceWalletId) {
+    public boolean existsByIdAndSourceWalletId(Long transactionId, Long sourceWalletId) {
         return transactionMapper.existsByIdAndSourceWalletId(transactionId, sourceWalletId);
     }
 
     @Override
-    public boolean existsByIdAndTargetWalletId(UUID transactionId, UUID targetWalletId) {
+    public boolean existsByIdAndTargetWalletId(Long transactionId, Long targetWalletId) {
         return transactionMapper.existsByIdAndTargetWalletId(transactionId, targetWalletId);
     }
 

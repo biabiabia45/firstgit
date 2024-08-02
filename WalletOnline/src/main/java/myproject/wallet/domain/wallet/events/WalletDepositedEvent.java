@@ -1,22 +1,24 @@
 package myproject.wallet.domain.wallet.events;
 
+import myproject.wallet.domain.valueobject.Money;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class WalletDepositedEvent {
-    private UUID walletId;
-    private BigDecimal amount;
+    private Long walletId;
+    private Money amount;
 
-    public WalletDepositedEvent(UUID walletId, BigDecimal amount) {
+    public WalletDepositedEvent(Long walletId, Money amount) {
         this.walletId = walletId;
         this.amount = amount;
     }
 
-    public UUID getWalletId() {
+    public Long getWalletId() {
         return walletId;
     }
 
-    public BigDecimal getAmount() {
+    public Money getAmount() {
         return amount;
     }
 

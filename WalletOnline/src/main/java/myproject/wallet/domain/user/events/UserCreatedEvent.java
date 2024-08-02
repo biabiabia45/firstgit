@@ -3,13 +3,13 @@ package myproject.wallet.domain.user.events;
 import java.util.UUID;
 
 public class UserCreatedEvent {
-    private final UUID userId;
+    private final Long userId;
 
-    public UserCreatedEvent(UUID userId) {
+    public UserCreatedEvent(Long userId) {
         this.userId = userId;
     }
 
-    public UUID getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

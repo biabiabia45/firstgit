@@ -21,12 +21,12 @@ public class WalletRepositoryImpl implements WalletRepository {
     }
 
     @Override
-    public List<Wallet> findByUserId(UUID userId) {
+    public List<Wallet> findByUserId(Long userId) {
         return walletMapper.findByUserId(userId);
     }
 
     @Override
-    public Optional<Wallet> findById(UUID walletId) {
+    public Optional<Wallet> findById(Long walletId) {
         return walletMapper.findById(walletId);
     }
 
@@ -37,12 +37,12 @@ public class WalletRepositoryImpl implements WalletRepository {
     }
 
     @Override
-    public boolean existsById(UUID id) {
+    public boolean existsById(Long id) {
         return walletMapper.existsById(id);
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
         walletMapper.deleteById(id);
     }
 
