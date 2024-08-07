@@ -31,9 +31,10 @@ public class User {
         return password;
     }
 
-//    public void setPassword(String password) {
+    public void setPassword(String password) {
 //        this.password = encryptPassword(password);
-//    }
+        this.password = password;
+    }
 
     public ContactInfo getContactInfo() {
         return contactInfo;
