@@ -7,7 +7,6 @@ import myproject.wallet.domain.user.entity.User;
 import myproject.wallet.domain.user.events.UserCreatedEvent;
 import myproject.wallet.domain.user.events.UserDeletedEvent;
 import myproject.wallet.domain.user.events.UserUpdatedEvent;
-import myproject.wallet.domain.user.kafka.UserEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,11 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final UserEventProducer userEventProducer;
 
     @Autowired
-    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher, UserEventProducer userEventProducer) {
+    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
-        this.userEventProducer = userEventProducer;
     }
 
     public Optional<User> getUserById(Long id) {
@@ -45,7 +42,6 @@ public class UserService {
         try {
             UserCreatedEvent event = new UserCreatedEvent(savedUser.getId());
             eventPublisher.publishEvent(event);
-            userEventProducer.sendUserCreatedEvent(event.toString());
         } catch (Exception e) {
             log.error("Failed to publish event or send message", e);
         }
@@ -58,7 +54,6 @@ public class UserService {
             try {
                 UserUpdatedEvent event = new UserUpdatedEvent(user.getId());
                 eventPublisher.publishEvent(event);
-                userEventProducer.sendUserUpdatedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -74,7 +69,6 @@ public class UserService {
             try {
                 UserDeletedEvent event = new UserDeletedEvent(id);
                 eventPublisher.publishEvent(event);
-                userEventProducer.sendUserDeletedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -83,10 +77,4 @@ public class UserService {
         }
     }
 
-//    public void changePassword(Long userId, String oldPassword, String newPassword) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
-//        user.updatePassword(oldPassword, newPassword);
-//        userRepository.save(user);
-//    }
 }

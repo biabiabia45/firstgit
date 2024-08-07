@@ -6,7 +6,6 @@ import myproject.wallet.domain.repository.WalletRepository;
 import myproject.wallet.domain.valueobject.Money;
 import myproject.wallet.domain.wallet.entity.Wallet;
 import myproject.wallet.domain.wallet.events.*;
-import myproject.wallet.domain.wallet.kafka.WalletEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -20,13 +19,11 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final WalletEventProducer walletEventProducer;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, ApplicationEventPublisher eventPublisher, WalletEventProducer walletEventProducer) {
+    public WalletService(WalletRepository walletRepository, ApplicationEventPublisher eventPublisher) {
         this.walletRepository = walletRepository;
         this.eventPublisher = eventPublisher;
-        this.walletEventProducer = walletEventProducer;
     }
 
     public Optional<Wallet> getWalletById(Long id) {
@@ -50,7 +47,6 @@ public class WalletService {
         try {
             WalletCreatedEvent event = new WalletCreatedEvent(savedWallet.getId());
             eventPublisher.publishEvent(event);
-            walletEventProducer.sendWalletCreatedEvent(event.toString());
         } catch (Exception e) {
             log.error("Failed to publish event or send message", e);
         }
@@ -64,7 +60,6 @@ public class WalletService {
             try {
                 WalletUpdatedEvent event = new WalletUpdatedEvent(wallet.getId());
                 eventPublisher.publishEvent(event);
-                walletEventProducer.sendWalletUpdatedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -80,7 +75,6 @@ public class WalletService {
             try {
                 WalletDeletedEvent event = new WalletDeletedEvent(id);
                 eventPublisher.publishEvent(event);
-                walletEventProducer.sendWalletDeletedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -100,7 +94,6 @@ public class WalletService {
         WalletDepositedEvent event = new WalletDepositedEvent(walletId, amount);
         try {
             eventPublisher.publishEvent(event);
-            walletEventProducer.sendWalletDepositedEvent(event.toString());
         } catch (Exception e) {
             log.error("Failed to publish event or send message", e);
         }
@@ -116,7 +109,6 @@ public class WalletService {
         WalletWithdrawnEvent event = new WalletWithdrawnEvent(walletId, amount);
         try {
             eventPublisher.publishEvent(event);
-            walletEventProducer.sendWalletWithdrawnEvent(event.toString());
         } catch (Exception e) {
             log.error("Failed to publish event or send message", e);
         }
