@@ -15,8 +15,7 @@ public interface UserMapper {
     @Select("SELECT id, username, email, password, address FROM user")
     List<User> findAllUser();
 
-    @Insert("INSERT INTO user (username, email, password, address) VALUES (#{username}, #{email}, #{password}, #{address})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("INSERT INTO user (username, password, email, address) VALUES (#{username}, #{password}, #{contactInfo.email}, #{contactInfo.address})")    @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertUser(User user);
 
     @Update("UPDATE user SET username=#{username}, email=#{email}, password=#{password}, address=#{address} WHERE id=#{id}")
