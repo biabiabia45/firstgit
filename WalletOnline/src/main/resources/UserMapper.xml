@@ -11,6 +11,18 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findByUsername" resultType="myproject.wallet.domain.user.entity.User">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <select id="findByEmail" resultType="myproject.wallet.domain.user.entity.User">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+
     <!-- 查询所有用户信息 -->
     <select id="findAllUser" resultType="myproject.wallet.domain.user.entity.User">
         SELECT *

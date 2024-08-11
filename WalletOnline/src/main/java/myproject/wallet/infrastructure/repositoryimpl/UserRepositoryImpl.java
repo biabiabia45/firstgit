@@ -48,4 +48,14 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(Long id) {
         userMapper.deleteUserById(id);
     }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userMapper.findByUsername(username);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userMapper.findByEmail(email);
+    }
 }

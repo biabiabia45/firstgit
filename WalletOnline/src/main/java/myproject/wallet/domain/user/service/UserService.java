@@ -7,9 +7,9 @@ import myproject.wallet.domain.user.entity.User;
 import myproject.wallet.domain.user.events.UserCreatedEvent;
 import myproject.wallet.domain.user.events.UserDeletedEvent;
 import myproject.wallet.domain.user.events.UserUpdatedEvent;
-import myproject.wallet.domain.user.kafka.UserEventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
-    private final UserEventProducer userEventProducer;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher, UserEventProducer userEventProducer) {
+    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
-        this.userEventProducer = userEventProducer;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<User> getUserById(Long id) {
@@ -41,24 +41,25 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null.");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         try {
             UserCreatedEvent event = new UserCreatedEvent(savedUser.getId());
             eventPublisher.publishEvent(event);
-            userEventProducer.sendUserCreatedEvent(event.toString());
         } catch (Exception e) {
             log.error("Failed to publish event or send message", e);
         }
         return savedUser;
     }
 
+
     public User updateUser(User user) {
         if (userRepository.existsById(user.getId())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User updatedUser = userRepository.save(user);
             try {
                 UserUpdatedEvent event = new UserUpdatedEvent(user.getId());
                 eventPublisher.publishEvent(event);
-                userEventProducer.sendUserUpdatedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -74,7 +75,6 @@ public class UserService {
             try {
                 UserDeletedEvent event = new UserDeletedEvent(id);
                 eventPublisher.publishEvent(event);
-                userEventProducer.sendUserDeletedEvent(event.toString());
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
@@ -83,10 +83,13 @@ public class UserService {
         }
     }
 
-//    public void changePassword(Long userId, String oldPassword, String newPassword) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
-//        user.updatePassword(oldPassword, newPassword);
-//        userRepository.save(user);
-//    }
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect.");
+        }
+        user.updatePassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 }

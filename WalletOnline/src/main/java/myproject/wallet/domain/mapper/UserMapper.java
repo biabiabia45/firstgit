@@ -14,6 +14,11 @@ public interface UserMapper {
 
     @Select("SELECT id, username, email, password, address FROM user")
     List<User> findAllUser();
+    @Select("SELECT id, username, email, password, address FROM user WHERE username = #{username} ")
+    Optional<User> findByUsername(String username);
+
+    @Select("SELECT id, username, email, password, address FROM user WHERE email = #{email} ")
+    Optional<User> findByEmail(String email);
 
     @Insert("INSERT INTO user (username, password, email, address) VALUES (#{username}, #{password}, #{contactInfo.email}, #{contactInfo.address})")    @Options(useGeneratedKeys = true, keyProperty = "id")
     void insertUser(User user);

@@ -9,6 +9,10 @@ public interface UserRepository {
 
     Optional<User> findById(Long id);
 
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByEmail(String email);
+
     List<User> findAll();
 
     User save(User user);
@@ -17,3 +21,4 @@ public interface UserRepository {
 
     void deleteById(Long id);
 }
+
