@@ -7,18 +7,21 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<User> findById(Long id);
+    List<User> findAll();
 
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
 
-    List<User> findAll();
-
     User save(User user);
 
     boolean existsById(Long id);
 
-    void deleteById(Long id);
+
+    boolean existsByUserName(String username);
+
+    void deleteByUsername(String username);
+
+    void changePassword(String username, String newPassword);
 }
 

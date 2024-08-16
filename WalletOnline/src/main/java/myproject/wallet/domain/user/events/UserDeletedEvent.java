@@ -1,20 +1,21 @@
 package myproject.wallet.domain.user.events;
 
 public class UserDeletedEvent {
-    private final Long userId;
+    private final String username;
 
-    public UserDeletedEvent(Long userId) {
-        this.userId = userId;
+
+    public UserDeletedEvent(String username) {
+        this.username = username;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUserName() {
+        return username;
     }
 
     @Override
     public String toString() {
         return "UserDeletedEvent{" +
-                "userId=" + userId +
+                "username=" + username +
                 '}';
     }
 }

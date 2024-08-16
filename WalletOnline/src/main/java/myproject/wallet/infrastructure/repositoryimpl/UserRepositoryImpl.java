@@ -20,11 +20,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userMapper.findUserById(id);
-    }
-
-    @Override
     public List<User> findAll() {
         return userMapper.findAllUser();
     }
@@ -45,8 +40,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        userMapper.deleteUserById(id);
+    public boolean existsByUserName(String username) {
+        return userMapper.existsUserByUserName(username);
+    }
+
+    @Override
+    public void deleteByUsername(String username) {
+        userMapper.deleteUserByUserName(username);
+    }
+
+    @Override
+    public void changePassword(String username, String newPassword) {
+        userMapper.changePassword(username, newPassword);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package myproject.wallet.api;
 
 import lombok.extern.slf4j.Slf4j;
+import myproject.wallet.application.dto.PasswordChangeRequest;
 import myproject.wallet.domain.exceptions.UserNotFoundException;
 import myproject.wallet.domain.user.entity.User;
 import myproject.wallet.domain.user.service.AuthService;
@@ -31,9 +32,9 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id,  @RequestHeader("Authorization") String token) {
-        Optional<User> user = userService.getUserById(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username,  @RequestHeader("Authorization") String token) {
+        Optional<User> user = userService.getUserByUserName(username);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -50,9 +51,9 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user,  @RequestHeader("Authorization") String token) {
-        user.setId(id);
+    @PutMapping("/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User user,  @RequestHeader("Authorization") String token) {
+        user.setUsername(username);
         try {
             User updatedUser = userService.updateUser(user);
             return ResponseEntity.ok(updatedUser); // 200 OK
@@ -64,10 +65,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id,  @RequestHeader("Authorization") String token) {
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username,  @RequestHeader("Authorization") String token) {
         try {
-            userService.deleteUser(id);
+            userService.deleteUser(username);
             return ResponseEntity.noContent().build(); // 204 No Content
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build(); // 404 Not Found
@@ -77,10 +78,14 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    @PutMapping("/{username}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable String username, @RequestBody PasswordChangeRequest passwordChangeRequest) {
         try {
-            userService.changePassword(id, oldPassword, newPassword);
+            log.info("Attempting to change password for user: {}", username);
+            log.info("Old Password: {}", passwordChangeRequest.getOldPassword());
+            log.info("New Password: {}", passwordChangeRequest.getNewPassword());
+
+            userService.changePassword(username, passwordChangeRequest.getOldPassword(), passwordChangeRequest.getNewPassword());
             return ResponseEntity.noContent().build(); // 204 No Content
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build(); // 404 Not Found

@@ -1,5 +1,6 @@
 package myproject.wallet.domain.user.entity;
 
+import jakarta.persistence.Column;
 import myproject.wallet.domain.valueobject.ContactInfo;
 
 public class User {
@@ -41,7 +42,7 @@ public class User {
         this.contactInfo = contactInfo;
     }
 
-    public void updatePassword(String newPassword) {
-        this.password = newPassword;
+    public String updatePassword(String newPassword) {
+        return this.password = newPassword;
     }
 }

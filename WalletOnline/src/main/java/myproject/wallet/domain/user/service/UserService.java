@@ -29,8 +29,8 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> getUserByUserName(String userName) {
+        return userRepository.findByUsername(userName);
     }
 
     public List<User> getAllUsers() {
@@ -41,21 +41,29 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null.");
         }
+        // 检查用户名是否唯一
+        if (userRepository.existsByUserName(user.getUsername())) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         User savedUser = userRepository.save(user);
+
         try {
             UserCreatedEvent event = new UserCreatedEvent(savedUser.getId());
             eventPublisher.publishEvent(event);
         } catch (Exception e) {
-            log.error("Failed to publish event or send message", e);
+            log.error("Failed to publish user created event", e);
         }
+
         return savedUser;
     }
 
 
     public User updateUser(User user) {
         if (userRepository.existsById(user.getId())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setContactInfo(user.getContactInfo());
             User updatedUser = userRepository.save(user);
             try {
                 UserUpdatedEvent event = new UserUpdatedEvent(user.getId());
@@ -69,27 +77,26 @@ public class UserService {
         }
     }
 
-    public void deleteUser(Long id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+    public void deleteUser(String username) {
+        if (userRepository.existsByUserName(username)) {
+            userRepository.deleteByUsername(username);
             try {
-                UserDeletedEvent event = new UserDeletedEvent(id);
+                UserDeletedEvent event = new UserDeletedEvent(username);
                 eventPublisher.publishEvent(event);
             } catch (Exception e) {
                 log.error("Failed to publish event or send message", e);
             }
         } else {
-            throw new UserNotFoundException("User with id " + id + " not found.");
+            throw new UserNotFoundException("User with username " + username + " not found.");
         }
     }
 
-    public void changePassword(Long userId, String oldPassword, String newPassword) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found."));
+    public void changePassword(String userName, String oldPassword, String newPassword) {
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new UserNotFoundException("User with username " + userName + " not found."));
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect.");
         }
-        user.updatePassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        userRepository.changePassword(userName, user.updatePassword(passwordEncoder.encode(newPassword)));
     }
 }

@@ -4,11 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="myproject.wallet.domain.mapper.UserMapper">
 
-    <!-- 查询用户信息通过ID -->
-    <select id="findUserById" resultType="myproject.wallet.domain.user.entity.User">
+    <!-- 查询所有用户信息 -->
+    <select id="findAllUser" resultType="myproject.wallet.domain.user.entity.User">
         SELECT *
         FROM user
-        WHERE id = #{id}
     </select>
 
     <select id="findByUsername" resultType="myproject.wallet.domain.user.entity.User">
@@ -23,16 +22,12 @@
         WHERE email = #{email}
     </select>
 
-    <!-- 查询所有用户信息 -->
-    <select id="findAllUser" resultType="myproject.wallet.domain.user.entity.User">
-        SELECT *
-        FROM user
-    </select>
 
     <!-- 插入用户信息 -->
     <insert id="insertUser" parameterType="myproject.wallet.domain.user.entity.User" useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO user (username, password, email, address) VALUES (#{username}, #{password}, #{contactInfo.email}, #{contactInfo.address})
+        INSERT INTO user (username, password, email, address)
+        VALUES (#{username}, #{password}, #{contactInfo.email}, #{contactInfo.address})
     </insert>
 
     <resultMap id="UserResultMap" type="myproject.wallet.domain.user.entity.User">
@@ -48,23 +43,32 @@
     <!-- 更新用户信息 -->
     <update id="updateUser" parameterType="myproject.wallet.domain.user.entity.User">
         UPDATE user
-        SET username = #{username},
-            email    = #{email},
-            password = #{password},
-            address  = #{address}
-        WHERE id = #{id}
+        SET email   = #{contactInfo.email},
+            address = #{contactInfo.address}
+        WHERE username = #{username}
     </update>
+
+    <update id="changePassword" parameterType="myproject.wallet.domain.user.entity.User">
+        UPDATE user
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
+    <!-- 删除用户信息 -->
+    <delete id="deleteUserByUserName">
+        DELETE
+        FROM user
+        WHERE username = #{username}
+    </delete>
 
     <!-- 检查用户是否存在 -->
     <select id="existsUserById" resultType="boolean">
         SELECT EXISTS(SELECT 1 FROM user WHERE id = #{id})
     </select>
 
-    <!-- 删除用户信息 -->
-    <delete id="deleteUserById">
-        DELETE
-        FROM user
-        WHERE id = #{id}
-    </delete>
+    <!-- 检查用户是否存在 -->
+    <select id="existsUserByUserName" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM user WHERE username = #{username})
+    </select>
 
 </mapper>
